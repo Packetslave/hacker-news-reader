@@ -9,13 +9,25 @@ class List extends Component {
     stories: PropTypes.array.isRequired,
   };
 
-  render() {
+  getFilteredStories = () => {
     const { stories } = this.props;
+
+    return stories.filter(story => {
+      if (story.type === "story" &&
+          story.title.includes("Facebook") &&
+          !story.url.includes("fb.com")) {
+        return false;
+      }
+      return true;
+    }).map(story => (
+      <ListItem key={story.id} {...story} />
+    ));
+  };
+
+  render() {
     return (
       <ListWrapper>
-        {stories.map(story => (
-          <ListItem key={story.id} {...story} />
-        ))}
+        {this.getFilteredStories()}
       </ListWrapper>
     );
   }
